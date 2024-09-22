@@ -1,0 +1,12 @@
+{
+  "name": "youtubetwitterbackend",
+  "version": "1.0.0",
+  "description": "A Full Youtube and Backend Series",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "author": "Waleed Akhtar Awan",
+  "license": "ISC"
+}
