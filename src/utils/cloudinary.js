@@ -26,4 +26,4 @@ try {
 }
 
 
-export default uploadOnCloudinary
+export { uploadOnCloudinary }
