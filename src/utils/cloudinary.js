@@ -16,8 +16,9 @@ try {
         resource_type: 'auto'
     })
     //file has been uploaded Successfully
-    console.log('File has uploaded Sucessfully',result.url)
+    fs.unlinkSync(localFilePath)
     return result;
+    
 } catch (error) {
     fs.unlinkSync(localFilePath)
     console.error('Error while uploading file on cloudinary',error)
