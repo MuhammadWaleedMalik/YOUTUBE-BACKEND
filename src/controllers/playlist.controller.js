@@ -84,18 +84,61 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
 const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
     const {playlistId, videoId} = req.params
     // TODO: remove video from playlist
+    const playlist = await Playlist.findById(playlistId)
+
+    if(!playlist){
+        throw new ApiError(404,"Playlist Not Found")
+    }
+
+    const video = await Video.findById(videoId)
+
+    if(!video){
+        throw new ApiError(404,"Video Not Found")
+    }
+
+    if(!playlist.videos.includes(videoId)){
+        throw new ApiError(400,"Video Not Found In Playlist")
+    }
+
+    playlist.videos = playlist.videos.filter(id => id !== videoId)
+
+    const updatedPlaylist = await playlist.save()
+
+    if(!updatedPlaylist){
+        throw new ApiError(500,"Failed To Remove Video From Playlist")
+    }
+
+    res.status(200).json(new ApiResponse(200,"Video Removed From Playlist Successfully",updatedPlaylist))
+    
+    
 
 })
 
 const deletePlaylist = asyncHandler(async (req, res) => {
     const {playlistId} = req.params
-    // TODO: delete playlist
+    // TODO: delete Playlist
+    const playlist = await Playlist.findByIdAndDelete(playlistId)
+    if(!playlist){
+        throw new ApiError(404,"Playlist Not Found")
+    }
+
+    res.status(200).json(new ApiResponse(200,"Playlist Deleted Successfully",playlist)) 
+
 })
 
 const updatePlaylist = asyncHandler(async (req, res) => {
     const {playlistId} = req.params
     const {name, description} = req.body
-    //TODO: update playlist
+
+    const playlist = await Playlist.findByIdAndUpdate(playlistId,{name,description})
+
+    if(!playlist){
+        throw new ApiError(404,"Playlist Not Found")
+    }
+
+    res.status(200).json(new ApiResponse(200,"Playlist Updated Successfully",playlist)) 
+    
+    
 })
 
 export {
